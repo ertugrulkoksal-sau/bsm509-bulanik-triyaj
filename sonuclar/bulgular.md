@@ -1,5 +1,22 @@
 # Bulgular (ara sürüm)
 
+## Özet: makale/kapsül ve bizim değerler
+
+| Ölçü | Makale / kapsül | Bizim | Durum |
+|---|---|---|---|
+| Toplam kayıt | 1.679.329 | 1.679.329 | aynı |
+| Febre (ön işleme sonrası) Não / Sim | 1.134.433 / 540.919 | 1.134.433 / 540.919 | aynı (B0) |
+| SV değerleri | 0,1 / 0,5 / 0,9 | 0,1 / 0,5 / 0,9 | aynı |
+| Yatış önerilen kayıt, 0,75 | %26,8 | %26,84 (449.685 / 1.675.352) | aynı |
+| Yatış önerilen kayıt, 0,50 | "biraz artıyor" | %27,39 (458.817) | uyumlu |
+| COVID-19 / diğer nedenli ölüm | 11.510 / 3.432 | 11.510 / 3.432 | aynı |
+| Ölümlerde fiili yatış, COVID / diğer | %63,29 / %47,15 | %63,29 / %47,15 (bilinen taban) | aynı (B4) |
+| COVID ölümünde yatırılmayan, fiili | %37 | %36,7 | aynı (yuvarlama) |
+| COVID ölümünde yatırılmayan, model 0,75 | %18 | %17,5 | aynı (yuvarlama) |
+| Tablo 5, 15 vaka | — | 12 uyumlu, 3 çelişkili | B1, B2 |
+
+Kaynak çıktılar: `sonuclar/veri_ozeti.txt`, `sonuclar/yeniden_uretim.txt`, `sonuclar/*.csv`, `sonuclar/*.png`.
+
 Makaleyle uyuşmayan değerler. Her birinde kural tabanına (Tablo 3) göre ne çıkması gerektiği yazıldı. Veri dosyası gelince bölümler genişletilecek.
 
 ## B0: Kapsülün "-" filtresinde sigara sütunu yok
@@ -50,3 +67,23 @@ Karara etkisi yok: 0,163 < 0,75 ≤ 0,873, aynı eşikte aynı karar çıkar.
 - B1'den farklı olarak bu üç vakada **0,75 eşiğindeki karar da değişiyor**. Kural tablosu üçüne de yatış öneriyor (0,9); makaledeki sayılarla (0,500 ve 0,163) yatış önerilmiyor.
 
 Kaynak: `python -m analiz.tablo5` → `sonuclar/tablo5.csv` (her vaka için ateşlenen kural, bizim SV, makale SV, iki eşik kararı).
+
+## B4: Makaledeki ölüm oranları yalnız yatış bilgisi bilinen kayıtlara göre
+
+Ölüm sayıları makaleyle birebir aynı (11.510 COVID-19, 3.432 diğer). Ancak bu ölümlerin önemli bir kısmında `FicouInternado` "Não Informado" ya da "Ignorado":
+
+| Grup | Sim | Não | Não Informado | Ignorado |
+|---|---|---|---|---|
+| COVID-19 ölümü | 5.324 | 3.088 | 2.821 | 277 |
+| Diğer nedenli ölüm | 1.143 | 1.281 | 879 | 129 |
+
+Makaledeki %63,29 = 5.324 / (5.324 + 3.088). Yani payda yalnız yatış bilgisi bilinen 8.412 kayıt; bütün ölümler (11.510) değil. Aynı tabanda:
+
+| Grup (bilinen taban) | n | Fiili yatış | Model, SV ≥ 0,75 | Model, SV ≥ 0,50 |
+|---|---|---|---|---|
+| COVID-19 ölümü | 8.412 | %63,3 | %82,5 | %83,9 |
+| Diğer nedenli ölüm | 2.424 | %47,2 | %72,1 | %75,1 |
+
+Bütün ölümler tabana alınırsa fiili yatış %46,3 (COVID) ve %33,3 (diğer), model 0,75 eşiğinde %80,3 ve %70,4 olur. Makale bu tercihi açıkça yazmıyor. Tabanı bilerek seçmek gerekiyor: "Não Informado" kayıtların yatırılmadığını varsaymak fiili oranı düşük gösterir.
+
+Yorum (abartmadan): Model, ölen hastaların daha büyük kısmına yatış öneriyor. Ama aynı model **bütün kayıtların %26,8'ine** yatış öneriyor. Ölümlerde yakalama oranının yükselmesi, kaç kişinin gereksiz yatırılacağı (yanlış pozitif) bilinmeden "daha iyi" diye okunmamalı. Bu, eşik analizinde (4. aşama) ele alınacak.

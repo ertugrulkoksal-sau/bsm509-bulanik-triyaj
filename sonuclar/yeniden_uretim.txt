@@ -1,0 +1,23 @@
+Ön işleme sonrası kayıt: 1,675,352
+
+1) SV dağılımı
+ SV   kayit     yuzde
+0.1 1216535 72.613696
+0.5    9132  0.545079
+0.9  449685 26.841225
+
+2) Yatış önerilen kayıt oranı (kapsül, 0,75: %26.8)
+ esik  yatis_onerilen  toplam     yuzde
+ 0.75          449685 1675352 26.841225
+ 0.50          458817 1675352 27.386304
+
+3) Ölüm vakaları
+              grup   taban  kayit  fiili_yatis_yuzde  model_yatis_yuzde_0.75  model_yatis_yuzde_0.50
+    COVID-19 ölümü     tum  11510          46.255430               80.286707               81.754996
+    COVID-19 ölümü bilinen   8412          63.290537               82.453638               83.927722
+Diğer nedenli ölüm     tum   3432          33.304196               70.425408               73.513986
+Diğer nedenli ölüm bilinen   2424          47.153465               72.112211               75.082508
+   Makale: COVID ölümü 11,510, diğer 3,432; fiili yatış %63.29 / %47.15
+   COVID ölümlerinde yatırılmayan (bilinen taban): fiili %36.7 (makale %37), model 0,75 %17.5 (makale %18)
+
+Kaydedildi: sonuclar/ altındaki csv ve png dosyaları
