@@ -1,4 +1,4 @@
-# Bulgular (ara sürüm)
+# Bulgular
 
 ## Özet: makale/kapsül ve bizim değerler
 
@@ -15,10 +15,14 @@
 | COVID ölümünde yatırılmayan, model 0,75 | %18 | %17,5 | aynı (yuvarlama) |
 | Tablo 5, 15 vaka | — | 12 uyumlu, 3 çelişkili | B1, B2 |
 | Gerçek veride ateşlenen kural | — | 36'nın 8'i (1–8); ateşin etkisi 0 | B3 |
+| Gerçek veride bulanık ile kesin model farkı | — | 0 kayıt | B6 |
+| BD'de hiçbir kuralın ateşlenmediği nokta | — | 0,25 ve 0,75 | B5 |
+| Farklı karar veren eşik aralığı | — | 3 (0,1 / 0,5 / 0,9) | B7 |
+| Yatış önerisi / fiili yatış (bilinen taban) | — | %33,65 / %2,30 | B7 |
 
 Kaynak çıktılar: `sonuclar/veri_ozeti.txt`, `sonuclar/yeniden_uretim.txt`, `sonuclar/*.csv`, `sonuclar/*.png`.
 
-Makaleyle uyuşmayan değerler. Her birinde kural tabanına (Tablo 3) göre ne çıkması gerektiği yazıldı. Veri dosyası gelince bölümler genişletilecek.
+B0–B4: makale ve kapsülle karşılaştırma; uyuşmayan her değerde kural tabanına (Tablo 3) göre ne çıkması gerektiği yazıldı. B5–B7: katkı analizi (sürekli girdiler, kesin model, eşik).
 
 ## B0: Kapsülün "-" filtresinde sigara sütunu yok
 
@@ -167,3 +171,23 @@ Ortalama mutlak fark 0,026. Kararın değiştiği noktaların hepsi kısmi üyel
 **Yorum (abartmadan):** Bulanık yapının bu modeldeki tek katkısı, VS'nin 4–7 ve RF/RS'nin 0,4–0,6 aralığındaki geçişleri yumuşatmak. Bu bölgelerde karar, sınırın hangi tarafında olunduğuna göre değil, kademeli olarak değişiyor. BD'de bu katkı yok (B5). Bu bölgeler ızgaranın yaklaşık üçte ikisini kaplıyor, ama gerçek veride hiçbir kayıt bu bölgelere düşmüyor. Izgaradaki yüzdeler ızgaranın nasıl seçildiğine bağlı; gerçek hasta dağılımını temsil etmiyor.
 
 Kaynak: `sonuclar/bulanik_kesin.csv`, `sonuclar/bulanik_kesin.txt`, `sonuclar/ortusme_bolgeleri.csv`.
+
+## B7: Eşik analizi: gerçek veride yalnız üç anlamlı eşik var
+
+Gerçek veride SV yalnız 0,1 / 0,5 / 0,9 değerlerini aldığı için eşik 0'dan 1'e kaydırılınca karar yalnız bu üç noktada değişiyor (`python -m analiz.esik_analizi`). Aynı aralıktaki her eşik birebir aynı kararı veriyor:
+
+| Eşik aralığı | Bütün kayıtlara öneri | COVID-19 ölümüne öneri (n = 8.412) | İyileşenlere öneri (n = 504.017) | Yakalanan ölüm başına öneri |
+|---|---|---|---|---|
+| ≤ 0,1 | %100 | %100 | %100 | 199,2 |
+| (0,1 – 0,5] | %27,39 | %83,93 | %29,71 | 65,0 |
+| **(0,5 – 0,9]**, makalenin 0,75'i burada | **%26,84** | **%82,45** | **%29,16** | **64,8** |
+| > 0,9 | %0 | %0 | %0 | — |
+
+- **0,75 ile 0,50 arasındaki fark yalnız SV = 0,5 olan 9.132 kayıttan geliyor** (kural 5: nefes darlığı var, risk faktörü ve diğer belirti yok). Makalenin "0,50'de yatış biraz artıyor" gözlemi bu: oran %26,84'ten %27,39'a çıkıyor.
+- 0,51 ile 0,90 arasındaki her eşik 0,75 ile aynı sonucu veriyor. Bu veride "eşik seçimi" aslında üç seçenekten birini seçmek demek.
+- **Gereksiz yatış maliyeti:** Yatış bilgisi bilinen 717.159 kayıtta fiili yatış oranı %2,30; model aynı kayıtların %33,65'ine yatış öneriyor, yani yaklaşık 15 kat. İyileşen hastaların %29,2'sine de yatış öneriliyor. Model ölümlerde yakalama oranını %63,3'ten %82,5'e çıkarıyor (B4), ama bunu yatış sayısını çok artırarak yapıyor. Yakalanan her COVID-19 ölümü başına yaklaşık 65 kayda yatış öneriliyor.
+- Bu bir hastane kapasitesi hesabı değil: kayıtların çoğu hafif, ayaktan izlenen vakalar ve "yatış önerisi" ile "fiili yatış" farklı süreçler. Ama makaledeki ölüm karşılaştırması tek başına okunursa modelin maliyeti görünmüyor.
+
+Not: SV kayan nokta hatasıyla 0,0999989 / 0,900001 çıkıyor. Eşik karşılaştırmasında 4 haneye yuvarlandı (0,1 / 0,5 / 0,9).
+
+Kaynak: `sonuclar/esik_analizi.csv`, `sonuclar/esik_analizi.txt`, `sonuclar/esik_analizi.png`.
