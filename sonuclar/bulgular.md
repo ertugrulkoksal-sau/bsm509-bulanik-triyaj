@@ -123,3 +123,27 @@ Makaledeki %63,29 = 5.324 / (5.324 + 3.088). Yani payda yalnız yatış bilgisi 
 Bütün ölümler tabana alınırsa fiili yatış %46,3 (COVID) ve %33,3 (diğer), model 0,75 eşiğinde %80,3 ve %70,4 olur. Makale bu tercihi açıkça yazmıyor. Tabanı bilerek seçmek gerekiyor: "Não Informado" kayıtların yatırılmadığını varsaymak fiili oranı düşük gösterir.
 
 Yorum (abartmadan): Model, ölen hastaların daha büyük kısmına yatış öneriyor. Ama aynı model **bütün kayıtların %26,8'ine** yatış öneriyor. Ölümlerde yakalama oranının yükselmesi, kaç kişinin gereksiz yatırılacağı (yanlış pozitif) bilinmeden "daha iyi" diye okunmamalı. Bu, eşik analizinde (4. aşama) ele alınacak.
+
+## B5: BD terimleri örtüşmüyor; 0,25 ve 0,75'te hiçbir kural ateşlenmiyor
+
+Sürekli girdilerle (`python -m analiz.yuzey_duyarlilik`) bakınca nefes darlığının (BD) üyelik fonksiyonlarında bir tasarım sorunu görünüyor:
+
+| Komşu terimler | Biri bittiği yer | Diğeri başladığı yer | Örtüşme |
+|---|---|---|---|
+| minimal → high | trapmf[0, 0, 0,2, **0,25**] | trimf[**0,25**, 0,5, 0,75] | yok |
+| high → veryhigh | trimf[0,25, 0,5, **0,75**] | trapmf[**0,75**, 0,8, 1, 1] | yok |
+
+- **BD = 0,25 ve BD = 0,75'te üç terimin üyeliği de 0.** Hiçbir kural ateşlenmiyor, birleşik çıktı kümesi boş kalıyor ve ağırlık merkezi tanımsız (0/0). Motorumuz bu durumda NaN döndürüyor; scikit-fuzzy aynı girdide hata veriyor. Yüzey grafiğinde (`sonuclar/yuzey_vs_bd.png`) kırmızı çizgiler bu iki nokta.
+- **BD'de yumuşak geçiş yok.** VS = 0, RF = 0, RS = 1 iken BD = 0,24'te SV 0,14, BD = 0,26'da SV 0,85. Arada tek bir kural bile iki terimle birlikte ateşlenmiyor; geçiş kesin modeldeki gibi bir sıçrama (`sonuclar/duyarlilik.png`, orta panel).
+- Karşılaştırma için: VS'de terimler 4–5 ve 6–7 aralıklarında, RF ve RS'de 0,4–0,6 aralığında örtüşüyor. Bu girdilerde çıktı eşikten eşiğe sürekli değişiyor (duyarlılık grafiği, sol ve sağ panel).
+
+| Girdi | Evrenin yüzde kaçında iki terim birlikte > 0 | Hiçbir terimin olmadığı nokta |
+|---|---|---|
+| VS | %11,1 | 0 |
+| BD | **%0** | **2 (0,25 ve 0,75)** |
+| RF | %20,0 | 0 |
+| RS | %20,0 | 0 |
+
+Gerçek veride bu sorun görünmüyor, çünkü BD yalnız 0 ve 0,5 değerlerini alıyor. Ama model sürekli bir BD ölçüsüyle (örneğin bir dispne skalası) kullanılsaydı 0,25 ve 0,75'teki hastalar için karar üretemezdi. Basit bir düzeltme, minimal'in sağ ayağını ve veryhigh'ın sol ayağını high üçgeninin içine uzatmak olurdu (ör. minimal trapmf[0, 0, 0,2, 0,35]). Biz modeli değiştirmedik, makaledeki haliyle bıraktık.
+
+Kaynak: `sonuclar/yuzey_vs_bd.png`, `sonuclar/yuzey_3b.png`, `sonuclar/duyarlilik.png`, `sonuclar/ortusme_bolgeleri.csv`.
