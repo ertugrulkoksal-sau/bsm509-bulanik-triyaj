@@ -21,15 +21,24 @@ KOMORBIDITE_SUTUNLARI = [
     "ComorbidadePulmao", "ComorbidadeCardio", "ComorbidadeRenal",
     "ComorbidadeDiabetes", "ComorbidadeTabagismo", "ComorbidadeObesidade",
 ]
-# "-" (boş yanıt) içeren satırlar bu sütunlara göre atılır
+# "-" (boş yanıt) içeren satırlar bu sütunlara göre atılır.
+# ComorbidadeTabagismo (sigara) bu listede YOK: kapsüldeki Febre sayıları
+# (Não 1.134.433 / Sim 540.919) yalnız sigara sütunu filtreye katılmadığında
+# tam tutuyor (bkz. sonuclar/bulgular.md, B0). Sigara RF hesabında yine kullanılır;
+# "-" yanıtı "Sim" olmadığı için risk sayılmaz.
 FILTRE_SUTUNLARI = (["Febre", "DificuldadeRespiratoria"] + BELIRTI_SUTUNLARI
-                    + KOMORBIDITE_SUTUNLARI + ["FicouInternado"])
+                    + [s for s in KOMORBIDITE_SUTUNLARI if s != "ComorbidadeTabagismo"]
+                    + ["FicouInternado"])
 # Okunacak tüm sütunlar (595 MB'lık dosyanın yalnız gereken kısmı)
-OKUNACAK_SUTUNLAR = FILTRE_SUTUNLARI + ["IdadeNaDataNotificacao", "Gestante", "Evolucao"]
+OKUNACAK_SUTUNLAR = (["Febre", "DificuldadeRespiratoria"] + BELIRTI_SUTUNLARI
+                     + KOMORBIDITE_SUTUNLARI + ["FicouInternado",
+                     "IdadeNaDataNotificacao", "Gestante", "Evolucao"])
 
-# Gestante sütununda gebelik OLMADIĞINI gösteren yanıtlar; geri kalanlar
-# ("1º Trimestre", "Idade gestacional ignorada" gibi) gebelik sayılır
-GEBE_DEGIL = {"Não", "Ignorado", "Não se aplica", "-", ""}
+# Gestante sütununda gebelik OLMADIĞINI gösteren yanıtlar. Veride görülen
+# diğer yanıtlar gebelik sayılır: "1º trimeste", "2º trimeste", "3º trimeste"
+# (veride "trimeste" diye yazılmış) ve "Idade gestacional ignorada"
+# (gebe, haftası bilinmiyor).
+GEBE_DEGIL = {"Não", "Ignorado", "Não se aplica"}
 
 
 def oku(dosya_yolu):

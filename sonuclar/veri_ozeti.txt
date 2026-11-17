@@ -1,0 +1,48 @@
+Toplam kayıt: 1,679,329  (makale: 1,679,329)
+
+Febre dağılımı (ham veri):
+Febre
+Não    1135946
+Sim     541830
+-         1553
+
+Gestante yanıtları (gebelik kodlamasını kontrol için):
+Gestante
+Não                           906601
+Não se aplica                 756905
+3º trimeste                     5943
+Ignorado                        4572
+2º trimeste                     2654
+1º trimeste                     2128
+Idade gestacional ignorada       526
+
+'-' yanıtlı satırlar atıldıktan sonra: 1,675,352 (3,977 satır atıldı)
+
+Febre dağılımı (ön işleme sonrası) ve kapsül:
+  Não: bizim 1,134,433  kapsül 1,134,433  -> uyuşuyor
+  Sim: bizim 540,919  kapsül 540,919  -> uyuşuyor
+
+Girdi kombinasyonları ve SV:
+ VS  BD  RF  RS       SV  kayit
+0.0 0.0 0.0 0.0 0.099999 353093
+0.0 0.0 0.0 1.0 0.099999 451240
+0.0 0.0 1.0 0.0 0.099999  68252
+0.0 0.0 1.0 1.0 0.900001 143037
+0.0 0.5 0.0 0.0 0.500000   6101
+0.0 0.5 0.0 1.0 0.900001  68188
+0.0 0.5 1.0 0.0 0.900001   7555
+0.0 0.5 1.0 1.0 0.900001  36967
+2.0 0.0 0.0 0.0 0.099999  17551
+2.0 0.0 0.0 1.0 0.099999 319375
+2.0 0.0 1.0 0.0 0.099999   7024
+2.0 0.0 1.0 1.0 0.900001  97417
+2.0 0.5 0.0 0.0 0.500000   3031
+2.0 0.5 0.0 1.0 0.900001  61189
+2.0 0.5 1.0 0.0 0.900001   2978
+2.0 0.5 1.0 1.0 0.900001  32354
+
+SV dağılımı:
+SV
+0.1    1216535
+0.5       9132
+0.9     449685

@@ -35,6 +35,8 @@ def ornek_dosya(tmp_path):
         satir("Não", "Não", ["Não"] * 4 + ["Sim"], KOMORBIDITE_YOK, "28 anos", "2º Trimestre"),
         # 5) Febre "-" -> atılmalı
         satir("-", "Não", belirti_yok, KOMORBIDITE_YOK, "50 anos", "Não"),
+        # 6) yalnız sigara "-" -> atılmamalı (kapsülle aynı filtre), RF=0
+        satir("Não", "Não", belirti_yok, ["Não"] * 4 + ["-", "Não"], "35 anos", "Não"),
     ]
     yol = tmp_path / "ornek.csv"
     yol.write_text("\n".join(satirlar), encoding="ISO-8859-1")
@@ -43,7 +45,7 @@ def ornek_dosya(tmp_path):
 
 def test_bos_yanitli_satir_atilir(ornek_dosya):
     df = hazirla(ornek_dosya)
-    assert len(df) == 4
+    assert len(df) == 5
 
 
 def test_girdi_kodlamasi(ornek_dosya):
@@ -54,11 +56,12 @@ def test_girdi_kodlamasi(ornek_dosya):
         [2, 0, 1, 1],
         [0, 0.5, 1, 0],
         [0, 0, 1, 1],
+        [0, 0, 0, 0],
     ]
 
 
 def test_siddet_ve_karar(ornek_dosya):
     df = hazirla(ornek_dosya)
     # Kural 1 (mild) -> 0,1; kural 4 (severe) -> 0,9; kural 7 (severe) -> 0,9
-    assert df["SV"].tolist() == pytest.approx([0.1, 0.9, 0.9, 0.9], abs=0.001)
-    assert df["ModelYatis"].tolist() == [False, True, True, True]
+    assert df["SV"].tolist() == pytest.approx([0.1, 0.9, 0.9, 0.9, 0.1], abs=0.001)
+    assert df["ModelYatis"].tolist() == [False, True, True, True, False]

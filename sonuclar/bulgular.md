@@ -2,6 +2,25 @@
 
 Makaleyle uyuşmayan değerler. Her birinde kural tabanına (Tablo 3) göre ne çıkması gerektiği yazıldı. Veri dosyası gelince bölümler genişletilecek.
 
+## B0: Kapsülün "-" filtresinde sigara sütunu yok
+
+`MICRODADOS.csv` 1.679.329 kayıt içeriyor; makaledeki sayıyla aynı. Ham Febre dağılımı Não 1.135.946 / Sim 541.830 / "-" 1.553. Kapsüldeki Não 1.134.433 / Sim 540.919 ham veriye ait değil, ön işlemeden sonraki sayılar.
+
+Brifteki filtre listesiyle (6 komorbiditenin hepsi) sonuç Não 1.134.397 / Sim 540.899 çıkıyor, kapsülden 56 kayıt eksik. Filtre listesinden sütunları birer birer çıkarıp denedim. **Yalnız `ComorbidadeTabagismo` (sigara) çıkarıldığında** sayılar kapsülle birebir tutuyor:
+
+| Filtre | Não | Sim | Kalan kayıt |
+|---|---|---|---|
+| 6 komorbiditenin hepsi | 1.134.397 | 540.899 | 1.675.296 |
+| Sigara hariç (kullanılan) | **1.134.433** | **540.919** | **1.675.352** |
+| Kapsül | 1.134.433 | 540.919 | — |
+
+`src/veri.py` buna göre düzeltildi. Sigara RF hesabında yine kullanılıyor; "-" yanıtı "Sim" olmadığı için risk sayılmıyor. Fark yüzde birin çok altında (56 kayıt) ve sonuçları değiştirmiyor; ama sayılar kapsülle birebir tuttuğu için bu filtre seçildi.
+
+Diğer kontroller:
+- Yaş (`IdadeNaDataNotificacao`, "43 anos, 3 meses, 19 dias" biçiminde) her kayıtta okunabildi, aralığı 0–117.
+- `Gestante` yanıtları: Não, Não se aplica, Ignorado (gebe değil); 1º/2º/3º "trimeste" (veride bu yazımla) ve "Idade gestacional ignorada" (gebe). `GEBE_DEGIL` kümesi buna göre doğru.
+- `FicouInternado` sütununda "-" yok; yanıtlar Sim / Não / Não Informado / Ignorado. Fiili yatış yalnız "Sim" sayıldı.
+
 ## B1: Tablo 5'teki SV sayıları kapsülün ÜF'leriyle elde edilemiyor
 
 İkili girdilerde her vakada tek kural tam güçle (1,0) ateşlenir. Bu yüzden çıktı, o kuralın çıktı üçgeninin ağırlık merkezidir:

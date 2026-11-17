@@ -19,12 +19,8 @@ def main():
     df = oku(VERI_YOLU)
     print(f"Toplam kayıt: {len(df):,}  (makale: {TOPLAM_KAYIT:,})")
 
-    print("\nFebre dağılımı (ön işleme öncesi):")
-    febre = df["Febre"].value_counts()
-    print(febre.to_string())
-    for yanit, beklenen in KAPSUL_FEBRE.items():
-        durum = "uyuşuyor" if febre.get(yanit, 0) == beklenen else "FARKLI"
-        print(f"  {yanit}: bizim {febre.get(yanit, 0):,}  kapsül {beklenen:,}  -> {durum}")
+    print("\nFebre dağılımı (ham veri):")
+    print(df["Febre"].value_counts().to_string())
 
     print("\nGestante yanıtları (gebelik kodlamasını kontrol için):")
     print(df["Gestante"].value_counts().to_string())
@@ -32,6 +28,13 @@ def main():
     temiz = bos_yanitlari_at(df)
     print(f"\n'-' yanıtlı satırlar atıldıktan sonra: {len(temiz):,} "
           f"({len(df) - len(temiz):,} satır atıldı)")
+
+    # Kapsüldeki Febre sayıları ön işleme SONRASINA ait
+    print("\nFebre dağılımı (ön işleme sonrası) ve kapsül:")
+    febre = temiz["Febre"].value_counts()
+    for yanit, beklenen in KAPSUL_FEBRE.items():
+        durum = "uyuşuyor" if febre.get(yanit, 0) == beklenen else "FARKLI"
+        print(f"  {yanit}: bizim {febre.get(yanit, 0):,}  kapsül {beklenen:,}  -> {durum}")
 
     temiz = siddet_ekle(girdileri_hesapla(temiz))
     print("\nGirdi kombinasyonları ve SV:")
