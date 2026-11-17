@@ -1,0 +1,14 @@
+# Veri dosyası büyük (595 MB) ve git'e girmez; indirme adımı data/README.md'de
+data/*.csv
+data/*.zip
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+
+# İşletim sistemi
+.DS_Store
+Thumbs.db

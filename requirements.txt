@@ -1,0 +1,9 @@
+numpy
+pandas
+matplotlib
+scikit-fuzzy
+# scikit-fuzzy 0.5 bu ikisini kendisi kurmuyor ama içe aktarırken istiyor
+scipy
+networkx
+streamlit
+pytest
