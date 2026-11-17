@@ -47,4 +47,6 @@ Karara etkisi yok: 0,163 < 0,75 ≤ 0,873, aynı eşikte aynı karar çıkar.
 - Vaka 13 ve 15'te BD = 0,5 (nefes darlığı var), RS = 1. Tablo 3'te bu durum için tek kural var (kural 6) ve sonucu severe. "Mild" çıkması için BD'nin minimal (0) olması gerekirdi. O zaman kural 2 çalışır: mild, 0,1.
 - Diğer 12 vaka Tablo 3 ile uyumlu.
 
-Kaynak: `python -c` ile `src.mamdani.cikarim` her vakada çalıştırıldı. Ayrıntılı tablo `analiz/tablo5.py` ile üretilecek.
+- B1'den farklı olarak bu üç vakada **0,75 eşiğindeki karar da değişiyor**. Kural tablosu üçüne de yatış öneriyor (0,9); makaledeki sayılarla (0,500 ve 0,163) yatış önerilmiyor.
+
+Kaynak: `python -m analiz.tablo5` → `sonuclar/tablo5.csv` (her vaka için ateşlenen kural, bizim SV, makale SV, iki eşik kararı).

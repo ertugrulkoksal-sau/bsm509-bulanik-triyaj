@@ -1,0 +1,16 @@
+vaka,VS,BD,RF,RS,ateslenen_kural,kural_tablosuna_gore,bizim_SV,bizim_terim,makale_terim,makale_SV,terim_uyusuyor,bizim_karar_075,makale_karar_075
+1,2,0.5,1,1,8,severe,0.9,severe,severe,0.873,True,True,True
+2,0,0.0,1,0,3,mild,0.1,mild,mild,0.163,True,False,False
+3,2,0.0,1,1,4,severe,0.9,severe,severe,0.8737,True,True,True
+4,2,0.5,1,1,8,severe,0.9,severe,severe,0.8737,True,True,True
+5,2,0.0,1,1,4,severe,0.9,severe,moderate,0.5,False,True,False
+6,0,0.0,0,1,2,mild,0.1,mild,mild,0.163,True,False,False
+7,2,0.0,0,1,2,mild,0.1,mild,mild,0.163,True,False,False
+8,0,0.0,0,1,2,mild,0.1,mild,mild,0.163,True,False,False
+9,2,0.0,0,1,2,mild,0.1,mild,mild,0.163,True,False,False
+10,0,0.0,0,1,2,mild,0.1,mild,mild,0.163,True,False,False
+11,0,0.0,0,1,2,mild,0.1,mild,mild,0.163,True,False,False
+12,0,0.0,0,1,2,mild,0.1,mild,mild,0.163,True,False,False
+13,0,0.5,0,1,6,severe,0.9,severe,mild,0.163,False,True,False
+14,0,0.0,0,1,2,mild,0.1,mild,mild,0.163,True,False,False
+15,0,0.5,0,1,6,severe,0.9,severe,mild,0.163,False,True,False
