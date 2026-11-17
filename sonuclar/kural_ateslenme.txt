@@ -1,0 +1,63 @@
+1) Veride görülen girdi değerlerinin üyelik dereceleri
+degisken  deger      terim  uyelik
+      VS    0.0        low     1.0
+      VS    2.0        low     1.0
+      BD    0.0    minimal     1.0
+      BD    0.5       high     1.0
+      RF    0.0    minimal     1.0
+      RF    1.0 meaningful     1.0
+      RS    0.0    minimal     1.0
+      RS    1.0 meaningful     1.0
+
+2) Ateşin etkisi (VS = 0 ve VS = 2, diğer girdiler aynı)
+ BD  RF  RS  SV_ates_yok  SV_ates_var  fark
+0.0 0.0 0.0          0.1          0.1   0.0
+0.0 0.0 1.0          0.1          0.1   0.0
+0.0 1.0 0.0          0.1          0.1   0.0
+0.0 1.0 1.0          0.9          0.9   0.0
+0.5 0.0 0.0          0.5          0.5   0.0
+0.5 0.0 1.0          0.9          0.9   0.0
+0.5 1.0 0.0          0.9          0.9   0.0
+0.5 1.0 1.0          0.9          0.9   0.0
+
+3) Kural başına ateşlendiği kayıt sayısı (toplam 1,675,352 kayıt)
+ kural     VS       BD         RF         RS       SV  ateslendigi_kayit  yuzde
+     1    low  minimal    minimal    minimal     mild             370644  22.12
+     2    low  minimal    minimal meaningful     mild             770615  46.00
+     3    low  minimal meaningful    minimal     mild              75276   4.49
+     4    low  minimal meaningful meaningful   severe             240454  14.35
+     5    low     high    minimal    minimal moderate               9132   0.55
+     6    low     high    minimal meaningful   severe             129377   7.72
+     7    low     high meaningful    minimal   severe              10533   0.63
+     8    low     high meaningful meaningful   severe              69321   4.14
+     9    low veryhigh    minimal    minimal   severe                  0   0.00
+    10    low veryhigh    minimal meaningful   severe                  0   0.00
+    11    low veryhigh meaningful    minimal   severe                  0   0.00
+    12    low veryhigh meaningful meaningful   severe                  0   0.00
+    13 medium  minimal    minimal    minimal     mild                  0   0.00
+    14 medium  minimal    minimal meaningful moderate                  0   0.00
+    15 medium  minimal meaningful    minimal moderate                  0   0.00
+    16 medium  minimal meaningful meaningful moderate                  0   0.00
+    17 medium     high    minimal    minimal moderate                  0   0.00
+    18 medium     high    minimal meaningful   severe                  0   0.00
+    19 medium     high meaningful    minimal   severe                  0   0.00
+    20 medium     high meaningful meaningful   severe                  0   0.00
+    21 medium veryhigh    minimal    minimal   severe                  0   0.00
+    22 medium veryhigh    minimal meaningful   severe                  0   0.00
+    23 medium veryhigh meaningful    minimal   severe                  0   0.00
+    24 medium veryhigh meaningful meaningful   severe                  0   0.00
+    25   high  minimal    minimal    minimal moderate                  0   0.00
+    26   high  minimal    minimal meaningful   severe                  0   0.00
+    27   high  minimal meaningful    minimal   severe                  0   0.00
+    28   high  minimal meaningful meaningful   severe                  0   0.00
+    29   high     high    minimal    minimal   severe                  0   0.00
+    30   high     high    minimal meaningful   severe                  0   0.00
+    31   high     high meaningful    minimal   severe                  0   0.00
+    32   high     high meaningful meaningful   severe                  0   0.00
+    33   high veryhigh    minimal    minimal   severe                  0   0.00
+    34   high veryhigh    minimal meaningful   severe                  0   0.00
+    35   high veryhigh meaningful    minimal   severe                  0   0.00
+    36   high veryhigh meaningful meaningful   severe                  0   0.00
+
+En az bir kayıtta ateşlenen kurallar: [1, 2, 3, 4, 5, 6, 7, 8] (8/36)
+Toplam ateşlenme = 1,675,352 (her kayıtta tam bir kural ateşleniyorsa toplam kayda eşit olmalı)
