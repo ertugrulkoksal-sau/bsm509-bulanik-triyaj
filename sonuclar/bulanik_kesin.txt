@@ -1,0 +1,21 @@
+1) Gerçek veri
+   1,675,352 kaydın 0 tanesinde iki model farklı SV veriyor.
+
+2) Sürekli ızgara (her girdi evreninde eşit aralıklı)
+   izgara_noktasi: 228327
+   bulanik_tanimsiz: 0
+   ayni_yuzde (fark < 0,001): 42.4
+   ortalama_mutlak_fark: 0.0258
+   en_buyuk_fark: 0.4
+   karar_farkli_yuzde (0,75): 4.5
+
+   Kısmi üyelik var mı? (en az bir girdi tek terime tam üye değil)
+   kısmi = False: 80,500 nokta, aynı %100.0, karar farklı %0.0, en büyük fark 0.000
+   kısmi = True: 147,827 nokta, aynı %11.1, karar farklı %7.0, en büyük fark 0.400
+
+3) Örtüşme bölgeleri (iki terimin birlikte > 0 olduğu pay)
+degisken  ortusme_yuzde  hicbir_terim_yok_nokta
+      VS           11.1                       0
+      BD            0.0                       2
+      RF           20.0                       0
+      RS           20.0                       0

@@ -133,7 +133,7 @@ Sürekli girdilerle (`python -m analiz.yuzey_duyarlilik`) bakınca nefes darlı�
 | minimal → high | trapmf[0, 0, 0,2, **0,25**] | trimf[**0,25**, 0,5, 0,75] | yok |
 | high → veryhigh | trimf[0,25, 0,5, **0,75**] | trapmf[**0,75**, 0,8, 1, 1] | yok |
 
-- **BD = 0,25 ve BD = 0,75'te üç terimin üyeliği de 0.** Hiçbir kural ateşlenmiyor, birleşik çıktı kümesi boş kalıyor ve ağırlık merkezi tanımsız (0/0). Motorumuz bu durumda NaN döndürüyor; scikit-fuzzy aynı girdide hata veriyor. Yüzey grafiğinde (`sonuclar/yuzey_vs_bd.png`) kırmızı çizgiler bu iki nokta.
+- **BD = 0,25 ve BD = 0,75'te üç terimin üyeliği de 0.** Hiçbir kural ateşlenmiyor, birleşik çıktı kümesi boş kalıyor ve ağırlık merkezi tanımsız (0/0). Motorumuz bu durumda NaN döndürüyor; scikit-fuzzy aynı girdide çıktı üretmiyor (`output["SV"]` boş kalıyor, KeyError). Yüzey grafiğinde (`sonuclar/yuzey_vs_bd.png`) kırmızı çizgiler bu iki nokta.
 - **BD'de yumuşak geçiş yok.** VS = 0, RF = 0, RS = 1 iken BD = 0,24'te SV 0,14, BD = 0,26'da SV 0,85. Arada tek bir kural bile iki terimle birlikte ateşlenmiyor; geçiş kesin modeldeki gibi bir sıçrama (`sonuclar/duyarlilik.png`, orta panel).
 - Karşılaştırma için: VS'de terimler 4–5 ve 6–7 aralıklarında, RF ve RS'de 0,4–0,6 aralığında örtüşüyor. Bu girdilerde çıktı eşikten eşiğe sürekli değişiyor (duyarlılık grafiği, sol ve sağ panel).
 
@@ -147,3 +147,23 @@ Sürekli girdilerle (`python -m analiz.yuzey_duyarlilik`) bakınca nefes darlı�
 Gerçek veride bu sorun görünmüyor, çünkü BD yalnız 0 ve 0,5 değerlerini alıyor. Ama model sürekli bir BD ölçüsüyle (örneğin bir dispne skalası) kullanılsaydı 0,25 ve 0,75'teki hastalar için karar üretemezdi. Basit bir düzeltme, minimal'in sağ ayağını ve veryhigh'ın sol ayağını high üçgeninin içine uzatmak olurdu (ör. minimal trapmf[0, 0, 0,2, 0,35]). Biz modeli değiştirmedik, makaledeki haliyle bıraktık.
 
 Kaynak: `sonuclar/yuzey_vs_bd.png`, `sonuclar/yuzey_3b.png`, `sonuclar/duyarlilik.png`, `sonuclar/ortusme_bolgeleri.csv`.
+
+## B6: Bulanık model ile aynı kuralların kesin sürümü
+
+Kesin sürüm (`src/kesin_model.py`): her girdi yalnız tek bir terime atanır. Sınırlar, bulanık modelde en yüksek üyelikli terimin değiştiği noktalar: VS 4,5 ve 6,5; BD 0,25 ve 0,75; RF ve RS 0,5. Böylece tek kural çalışır ve çıktı 0,1 / 0,5 / 0,9 olur. Karşılaştırma `python -m analiz.bulanik_kesin` ile yapıldı.
+
+**Gerçek veride fark yok.** 1.675.352 kaydın **hiçbirinde** iki model farklı SV vermiyor. B3'teki gibi her kayıtta tek kural tam güçle ateşleniyor; bu durumda bulanık çıkarım kesin bir tablo okumasına indirgeniyor.
+
+**Sürekli girdilerde fark yalnız kısmi üyelik bölgelerinde.** Izgara: VS 0,5 adım, BD 0,02 adım, RF ve RS 0,1 adım, toplam 228.327 nokta, her girdinin evreni eşit aralıklı.
+
+| Nokta grubu | Nokta | SV aynı (fark < 0,001) | 0,75 kararı farklı | En büyük fark |
+|---|---|---|---|---|
+| Bütün girdiler tek terime tam üye | 80.500 | %100 | %0 | 0,000 |
+| En az bir girdi kısmi üye | 147.827 | %11,1 | %7,0 | 0,400 |
+| Hepsi | 228.327 | %42,4 | %4,5 | 0,400 |
+
+Ortalama mutlak fark 0,026. Kararın değiştiği noktaların hepsi kısmi üyelik bölgesinde.
+
+**Yorum (abartmadan):** Bulanık yapının bu modeldeki tek katkısı, VS'nin 4–7 ve RF/RS'nin 0,4–0,6 aralığındaki geçişleri yumuşatmak. Bu bölgelerde karar, sınırın hangi tarafında olunduğuna göre değil, kademeli olarak değişiyor. BD'de bu katkı yok (B5). Bu bölgeler ızgaranın yaklaşık üçte ikisini kaplıyor, ama gerçek veride hiçbir kayıt bu bölgelere düşmüyor. Izgaradaki yüzdeler ızgaranın nasıl seçildiğine bağlı; gerçek hasta dağılımını temsil etmiyor.
+
+Kaynak: `sonuclar/bulanik_kesin.csv`, `sonuclar/bulanik_kesin.txt`, `sonuclar/ortusme_bolgeleri.csv`.
